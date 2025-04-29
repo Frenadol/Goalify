@@ -1,5 +1,6 @@
 package com.frenadol.goalify.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -23,6 +24,7 @@ public class Hábito {
     @Column(name = "`id_hábito`", nullable = false)
     private Integer id;
 
+    @JsonIgnoreProperties("idUsuario")
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "id_usuario")
