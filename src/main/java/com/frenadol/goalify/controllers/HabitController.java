@@ -1,6 +1,6 @@
 package com.frenadol.goalify.controllers;
 
-import com.frenadol.goalify.models.Hábito;
+import com.frenadol.goalify.models.Habito;
 import com.frenadol.goalify.services.HabitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,8 +16,8 @@ public class HabitController {
     @Autowired
     private HabitService habitService;
     @PostMapping
-    public ResponseEntity<Hábito> createHabit(@RequestBody Hábito hábito) {
-        Hábito createdHabit = habitService.createHabit(hábito);
+    public ResponseEntity<Habito> createHabit(@RequestBody Habito hábito) {
+        Habito createdHabit = habitService.createHabit(hábito);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdHabit);
     }
 

@@ -1,7 +1,6 @@
 package com.frenadol.goalify.controllers;
 
 import com.frenadol.goalify.models.Desafio;
-import com.frenadol.goalify.models.Hábito;
 import com.frenadol.goalify.services.ChallengeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

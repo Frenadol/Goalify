@@ -14,11 +14,11 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Table(name = "`desafío`")
+@Table(name = "desafio")
 public class Desafio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "`id_desafío`", nullable = false)
+    @Column(name = "id_desafio", nullable = false)
     private Integer id;
 
     @Size(max = 255)
@@ -27,8 +27,8 @@ public class Desafio {
     private String nombre;
 
     @Lob
-    @Column(name = "`descripción`")
-    private String descripción;
+    @Column(name = "descripcion")
+    private String descripcion;
 
     @NotNull
     @Column(name = "fecha_inicio", nullable = false)
@@ -58,101 +58,6 @@ public class Desafio {
     private String categoria;
 
     @OneToMany(mappedBy = "idDesafio")
-    private Set<UsuarioDesafio> usuarioDesafios = new LinkedHashSet<>();
+    private Set<com.frenadol.goalify.models.UsuarioDesafio> usuarioDesafios = new LinkedHashSet<>();
 
-    public Desafio(Integer id, String nombre, String descripción, Instant fechaFin, Instant fechaInicio, String estado, Integer puntosRecompensa, String categoria, String tipo, Set<UsuarioDesafio> usuarioDesafios) {
-        this.id = id;
-        this.nombre = nombre;
-        this.descripción = descripción;
-        this.fechaFin = fechaFin;
-        this.fechaInicio = fechaInicio;
-        this.estado = estado;
-        this.puntosRecompensa = puntosRecompensa;
-        this.categoria = categoria;
-        this.tipo = tipo;
-        this.usuarioDesafios = usuarioDesafios;
-    }
-
-    public Desafio() {
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getDescripción() {
-        return descripción;
-    }
-
-    public void setDescripción(String descripción) {
-        this.descripción = descripción;
-    }
-
-    public Instant getFechaInicio() {
-        return fechaInicio;
-    }
-
-    public void setFechaInicio(Instant fechaInicio) {
-        this.fechaInicio = fechaInicio;
-    }
-
-    public Instant getFechaFin() {
-        return fechaFin;
-    }
-
-    public void setFechaFin(Instant fechaFin) {
-        this.fechaFin = fechaFin;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
-    public Integer getPuntosRecompensa() {
-        return puntosRecompensa;
-    }
-
-    public void setPuntosRecompensa(Integer puntosRecompensa) {
-        this.puntosRecompensa = puntosRecompensa;
-    }
-
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
-    public String getCategoria() {
-        return categoria;
-    }
-
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
-    }
-
-    public Set<UsuarioDesafio> getUsuarioDesafios() {
-        return usuarioDesafios;
-    }
-
-    public void setUsuarioDesafios(Set<UsuarioDesafio> usuarioDesafios) {
-        this.usuarioDesafios = usuarioDesafios;
-    }
 }

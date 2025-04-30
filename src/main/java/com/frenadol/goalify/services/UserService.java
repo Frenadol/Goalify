@@ -18,7 +18,7 @@ public class UserService {
 
 
     public Usuario createUser(Usuario usuario) {
-        usuario.setContraseña(passwordEncoder.encode(usuario.getContraseña()));
+        usuario.setContrasena(passwordEncoder.encode(usuario.getContrasena()));
         return userRepository.save(usuario);
     }
     public void deleteUserByNombre(String nombre) {
