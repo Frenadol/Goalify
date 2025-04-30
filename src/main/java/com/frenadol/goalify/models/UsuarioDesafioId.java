@@ -13,7 +13,7 @@ import java.util.Objects;
 @Setter
 @Embeddable
 public class UsuarioDesafioId implements java.io.Serializable {
-    private static final long serialVersionUID = -4386152302095612100L;
+    private static final long serialVersionUID = 3907582020286905630L;
     @NotNull
     @Column(name = "id_usuario", nullable = false)
     private Integer idUsuario;
@@ -31,15 +31,16 @@ public class UsuarioDesafioId implements java.io.Serializable {
                 Objects.equals(this.idDesafio, entity.idDesafio);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(idUsuario, idDesafio);
+    public UsuarioDesafioId() {
     }
 
     public UsuarioDesafioId(Integer idUsuario, Integer idDesafio) {
         this.idUsuario = idUsuario;
         this.idDesafio = idDesafio;
     }
-    public UsuarioDesafioId() {
+    @Override
+    public int hashCode() {
+        return Objects.hash(idUsuario, idDesafio);
     }
+
 }

@@ -1,7 +1,5 @@
 package com.frenadol.goalify.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -35,8 +33,8 @@ public class Usuario {
 
     @Size(max = 255)
     @NotNull
-    @Column(name = "contraseña", nullable = false)
-    private String contraseña;
+    @Column(name = "contrasena", nullable = false)
+    private String contrasena;
 
     @ColumnDefault("current_timestamp()")
     @Column(name = "fecha_registro")
@@ -73,41 +71,24 @@ public class Usuario {
     @Column(name = "es_administrador")
     private Boolean esAdministrador;
 
+    @OneToMany(mappedBy = "idUsuario")
+    private Set<Estadistica> estadisticas = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idUsuario")
-    private Set<Estadística> estadisticas = new LinkedHashSet<>();
-
-    @JsonIgnoreProperties("idUsuario")
-    @OneToMany(mappedBy = "idUsuario")
-    private Set<Hábito> habitos = new LinkedHashSet<>();
+    private Set<Habito> habitos = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idUsuario")
-    private Set<Logro> logros = new LinkedHashSet<>();
+    private Set<Logro> logroes = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idUsuario")
     private Set<UsuarioDesafio> usuarioDesafios = new LinkedHashSet<>();
 
-    public Usuario(Integer id, String nombre, String email, String contraseña, Instant fechaRegistro, String fotoPerfil, Integer puntosTotales, Integer nivel, Instant fechaUltimoIngreso, String biografia, String rango, Instant ultimaActualizacion, Boolean esAdministrador, Set<Estadística> estadisticas, Set<Hábito> habitos, Set<UsuarioDesafio> usuarioDesafios, Set<Logro> logros) {
-        this.id = id;
-        this.nombre = nombre;
-        this.email = email;
-        this.contraseña = contraseña;
-        this.fechaRegistro = fechaRegistro;
-        this.fotoPerfil = fotoPerfil;
-        this.puntosTotales = puntosTotales;
-        this.nivel = nivel;
-        this.fechaUltimoIngreso = fechaUltimoIngreso;
-        this.biografia = biografia;
-        this.rango = rango;
-        this.ultimaActualizacion = ultimaActualizacion;
-        this.esAdministrador = esAdministrador;
-        this.estadisticas = estadisticas;
-        this.habitos = habitos;
-        this.usuarioDesafios = usuarioDesafios;
-        this.logros = logros;
+    public Integer getId() {
+        return id;
     }
 
-    public Usuario() {
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getNombre() {
@@ -118,14 +99,6 @@ public class Usuario {
         this.nombre = nombre;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -134,12 +107,12 @@ public class Usuario {
         this.email = email;
     }
 
-    public String getContraseña() {
-        return contraseña;
+    public String getContrasena() {
+        return contrasena;
     }
 
-    public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
     }
 
     public Instant getFechaRegistro() {
@@ -158,20 +131,20 @@ public class Usuario {
         this.fotoPerfil = fotoPerfil;
     }
 
-    public Integer getPuntosTotales() {
-        return puntosTotales;
-    }
-
-    public void setPuntosTotales(Integer puntosTotales) {
-        this.puntosTotales = puntosTotales;
-    }
-
     public Integer getNivel() {
         return nivel;
     }
 
     public void setNivel(Integer nivel) {
         this.nivel = nivel;
+    }
+
+    public Integer getPuntosTotales() {
+        return puntosTotales;
+    }
+
+    public void setPuntosTotales(Integer puntosTotales) {
+        this.puntosTotales = puntosTotales;
     }
 
     public String getBiografia() {
@@ -214,28 +187,28 @@ public class Usuario {
         this.esAdministrador = esAdministrador;
     }
 
-    public Set<Estadística> getEstadisticas() {
+    public Set<Estadistica> getEstadisticas() {
         return estadisticas;
     }
 
-    public void setEstadisticas(Set<Estadística> estadisticas) {
+    public void setEstadisticas(Set<Estadistica> estadisticas) {
         this.estadisticas = estadisticas;
     }
 
-    public Set<Hábito> getHabitos() {
+    public Set<Habito> getHabitos() {
         return habitos;
     }
 
-    public void setHabitos(Set<Hábito> habitos) {
+    public void setHabitos(Set<Habito> habitos) {
         this.habitos = habitos;
     }
 
-    public Set<Logro> getLogros() {
-        return logros;
+    public Set<Logro> getLogroes() {
+        return logroes;
     }
 
-    public void setLogros(Set<Logro> logros) {
-        this.logros = logros;
+    public void setLogroes(Set<Logro> logroes) {
+        this.logroes = logroes;
     }
 
     public Set<UsuarioDesafio> getUsuarioDesafios() {
