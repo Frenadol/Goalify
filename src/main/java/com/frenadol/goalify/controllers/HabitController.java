@@ -1,5 +1,6 @@
 package com.frenadol.goalify.controllers;
 
+import com.frenadol.goalify.dto.HabitoDTO;
 import com.frenadol.goalify.models.Habito;
 import com.frenadol.goalify.services.HabitService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +16,21 @@ import org.springframework.web.bind.annotation.RestController;
 public class HabitController {
     @Autowired
     private HabitService habitService;
-    @PostMapping
-    public ResponseEntity<Habito> createHabit(@RequestBody Habito hábito) {
-        Habito createdHabit = habitService.createHabit(hábito);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdHabit);
-    }
 
+    @PostMapping
+    public ResponseEntity<HabitoDTO> create(@RequestBody Habito habito) {
+        Habito saved = habitService.createHabit(habito);
+
+        HabitoDTO dto = new HabitoDTO();
+        dto.setId(saved.getId());
+        dto.setIdUsuario(saved.getIdUsuario().getId());
+        dto.setNombre(saved.getNombre());
+        dto.setDescripcion(saved.getDescripcion());
+        dto.setFrecuencia(saved.getFrecuencia());
+        dto.setHoraProgramada(saved.getHoraProgramada());
+        dto.setEstado(saved.getEstado());
+        dto.setPuntosRecompensa(saved.getPuntosRecompensa());
+
+        return ResponseEntity.ok(dto);
+    }
 }
