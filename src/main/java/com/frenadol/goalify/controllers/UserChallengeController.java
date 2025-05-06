@@ -21,7 +21,6 @@ public class UserChallengeController {
     public ResponseEntity<UsuarioDesafioDTO> create(@RequestBody UsuarioDesafio usuarioDesafio) {
         UsuarioDesafio saved = userChallengeService.assignUserToChallenge(usuarioDesafio);
 
-        // Convertir a DTO
         UsuarioDesafioDTO dto = new UsuarioDesafioDTO();
         dto.setId(new UsuarioDesafioDTO.IdDTO());
         dto.getId().setIdUsuario(saved.getId().getIdUsuario());
