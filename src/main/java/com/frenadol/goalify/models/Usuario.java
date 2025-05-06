@@ -1,5 +1,6 @@
 package com.frenadol.goalify.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -78,7 +79,7 @@ public class Usuario {
     private Set<Habito> habitos = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idUsuario")
-    private Set<Logro> logroes = new LinkedHashSet<>();
+    private Set<Logro> logros = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idUsuario")
     private Set<UsuarioDesafio> usuarioDesafios = new LinkedHashSet<>();
@@ -203,12 +204,12 @@ public class Usuario {
         this.habitos = habitos;
     }
 
-    public Set<Logro> getLogroes() {
-        return logroes;
+    public Set<Logro> getLogros() {
+        return logros;
     }
 
-    public void setLogroes(Set<Logro> logroes) {
-        this.logroes = logroes;
+    public void setLogros(Set<Logro> logroes) {
+        this.logros = logroes;
     }
 
     public Set<UsuarioDesafio> getUsuarioDesafios() {
