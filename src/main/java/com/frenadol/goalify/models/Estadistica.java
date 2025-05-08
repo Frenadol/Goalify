@@ -1,5 +1,6 @@
 package com.frenadol.goalify.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -17,6 +18,7 @@ import java.time.Instant;
 @Table(name = "estadistica")
 public class Estadistica {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_estadistica", nullable = false)
     private Integer id;
 
@@ -24,13 +26,13 @@ public class Estadistica {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "id_usuario", nullable = false)
-    private com.frenadol.goalify.models.Usuario idUsuario;
+    private Usuario idUsuario;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "id_habito", nullable = false)
-    private com.frenadol.goalify.models.Habito idHabito;
+    private Habito idHabito;
 
     @Column(name = "fecha")
     private Instant fecha;

@@ -27,7 +27,7 @@ public class Habito {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "id_usuario", nullable = false)
-    private com.frenadol.goalify.models.Usuario idUsuario;
+    private Usuario idUsuario;
 
     @Size(max = 255)
     @NotNull

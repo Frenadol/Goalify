@@ -1,5 +1,7 @@
 package com.frenadol.goalify.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -56,8 +58,5 @@ public class Desafio {
     @Lob
     @Column(name = "categoria", nullable = false)
     private String categoria;
-
-    @OneToMany(mappedBy = "idDesafio")
-    private Set<com.frenadol.goalify.models.UsuarioDesafio> usuarioDesafios = new LinkedHashSet<>();
 
 }

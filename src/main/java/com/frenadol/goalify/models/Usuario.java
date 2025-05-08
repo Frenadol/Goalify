@@ -1,6 +1,7 @@
 package com.frenadol.goalify.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -71,6 +72,7 @@ public class Usuario {
     @ColumnDefault("0")
     @Column(name = "es_administrador")
     private Boolean esAdministrador;
+
 
     @OneToMany(mappedBy = "idUsuario")
     private Set<Estadistica> estadisticas = new LinkedHashSet<>();

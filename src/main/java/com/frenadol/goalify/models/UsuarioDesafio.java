@@ -1,5 +1,6 @@
 package com.frenadol.goalify.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference; // Importa esta anotación
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -21,6 +22,7 @@ public class UsuarioDesafio {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "id_usuario", nullable = false)
+    @JsonBackReference  // Cambia a JsonBackReference
     private Usuario idUsuario;
 
     @MapsId("idDesafio")
@@ -37,4 +39,5 @@ public class UsuarioDesafio {
     @Column(name = "estado_participacion", nullable = false)
     private String estadoParticipacion;
 
+    // Getters y setters
 }
