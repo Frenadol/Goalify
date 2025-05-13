@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/challenges") // Plural para el recurso
+@RequestMapping("/challenges")
 public class ChallengeController {
     @Autowired
     private ChallengeService challengeService;
 
     @PostMapping
-    public ResponseEntity<Desafio> createChallenge(@Valid @RequestBody Desafio desafio) { // Nombre del método más claro y validación
+    public ResponseEntity<Desafio> createChallenge(@Valid @RequestBody Desafio desafio) {
         Desafio newChallenge = challengeService.createChallenge(desafio);
         return new ResponseEntity<>(newChallenge, HttpStatus.CREATED);
     }
@@ -45,7 +45,7 @@ public class ChallengeController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteChallenge(@PathVariable Integer id) {
         if (challengeService.deleteChallenge(id)) {
-            return ResponseEntity.noContent().build(); // 204 No Content para eliminación exitosa
+            return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();
         }

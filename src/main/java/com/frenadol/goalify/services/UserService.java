@@ -14,11 +14,10 @@ import java.util.Optional;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    // @Autowired
+    //private PasswordEncoder passwordEncoder;
 
     public Usuario createUser(Usuario usuario) {
-        usuario.setContrasena(passwordEncoder.encode(usuario.getContrasena()));
         return userRepository.save(usuario);
     }
 
@@ -31,12 +30,16 @@ public class UserService {
     }
 
     public Optional<Usuario> updateUser(Integer id, Usuario usuario) {
-        return userRepository.findById(id)
-                .map(existingUser -> {
-                    usuario.setId(id);
-                    usuario.setContrasena(existingUser.getContrasena()); // No permitir cambiar la contraseña aquí, o manejarlo con lógica específica
-                    return userRepository.save(usuario);
-                });
+        return userRepository.findById(id).map(existingUser -> {
+            existingUser.setNombre(usuario.getNombre());
+            existingUser.setEmail(usuario.getEmail());
+            existingUser.setFotoPerfil(usuario.getFotoPerfil()); // Base64
+            existingUser.setPuntosTotales(usuario.getPuntosTotales());
+            existingUser.setNivel(usuario.getNivel());
+            existingUser.setBiografia(usuario.getBiografia());
+            existingUser.setRango(usuario.getRango());
+            return userRepository.save(existingUser);
+        });
     }
 
     public boolean deleteUser(Integer id) {

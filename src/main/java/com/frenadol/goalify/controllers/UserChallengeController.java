@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user-challenges") // Guion medio para nombres de recursos compuestos
+@RequestMapping("/user-challenges")
 public class UserChallengeController {
     @Autowired
     private UserChallengeService userChallengeService;
@@ -30,8 +30,7 @@ public class UserChallengeController {
         return ResponseEntity.ok(userChallenges);
     }
 
-    @GetMapping("/{id}") // Necesitarías definir una forma de identificar UsuarioDesafio por ID (quizás combinando IDs de usuario y desafío)
-    public ResponseEntity<UsuarioDesafioDTO> getUserChallengeById(@PathVariable UsuarioDesafioId id) { // Asumiendo que UsuarioDesafioId es tu EmbeddedId
+    public ResponseEntity<UsuarioDesafioDTO> getUserChallengeById(@PathVariable UsuarioDesafioId id) {
         return userChallengeService.getUserChallengeById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());

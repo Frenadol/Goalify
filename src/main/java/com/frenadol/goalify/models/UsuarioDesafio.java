@@ -39,5 +39,4 @@ public class UsuarioDesafio {
     @Column(name = "estado_participacion", nullable = false)
     private String estadoParticipacion;
 
-    // Getters y setters
 }
