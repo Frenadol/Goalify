@@ -1,13 +1,11 @@
 package com.frenadol.goalify.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.frenadol.goalify.enums.Rangos; // Asegúrate que la ruta a tu enum sea correcta
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
 import java.util.LinkedHashSet;
@@ -18,6 +16,7 @@ import java.util.Set;
 @Entity
 @Table(name = "usuario")
 public class Usuario {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_usuario", nullable = false)
@@ -30,7 +29,7 @@ public class Usuario {
 
     @Size(max = 255)
     @NotNull
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @Size(max = 255)
@@ -38,53 +37,51 @@ public class Usuario {
     @Column(name = "contrasena", nullable = false)
     private String contrasena;
 
-    @ColumnDefault("current_timestamp()")
-    @Column(name = "fecha_registro")
+    @Column(name = "fecha_registro", updatable = false, nullable = false) // Aseguramos que no sea null en DB
     private Instant fechaRegistro;
 
-    @Size(max = 255)
-    @Column(name = "foto_perfil")
-    private String fotoPerfil;
+    @Lob
+    @Column(name = "foto_perfil", columnDefinition="TEXT")
+    private String fotoPerfil; // Este puede ser null si el usuario no sube foto
 
-    @ColumnDefault("0")
-    @Column(name = "puntos_totales")
-    private Integer puntosTotales;
+    @Column(name = "puntos_totales", nullable = false)
+    private Integer puntosTotales = 0; // Valor por defecto
 
-    @ColumnDefault("1")
-    @Column(name = "nivel")
-    private Integer nivel;
+    @Column(name = "nivel", nullable = false)
+    private Integer nivel = 1; // Valor por defecto
 
     @Lob
-    @Column(name = "biografia")
-    private String biografia;
+    @Column(name = "biografia", columnDefinition="TEXT")
+    private String biografia; // Este puede ser null o puedes inicializarlo a "" si prefieres
 
     @Column(name = "fecha_ultimo_ingreso")
-    private Instant fechaUltimoIngreso;
+    private Instant fechaUltimoIngreso; // Se actualiza al ingresar, puede ser null inicialmente
 
-    @Size(max = 50)
-    @Column(name = "rango", length = 50)
-    private String rango;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "rango", length = 50, nullable = false)
+    private Rangos rango = Rangos.NOVATO; // Valor por defecto
 
-    @ColumnDefault("current_timestamp()")
-    @Column(name = "ultima_actualizacion")
+    @Column(name = "ultima_actualizacion", nullable = false) // Aseguramos que no sea null en DB
     private Instant ultimaActualizacion;
 
-    @ColumnDefault("0")
-    @Column(name = "es_administrador")
-    private Boolean esAdministrador;
+    @Column(name = "es_administrador", nullable = false)
+    private Boolean esAdministrador = false; // Valor por defecto
 
-
-    @OneToMany(mappedBy = "idUsuario")
+    // Relaciones
+    @OneToMany(mappedBy = "idUsuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Estadistica> estadisticas = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "idUsuario")
+    @OneToMany(mappedBy = "idUsuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Habito> habitos = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "idUsuario")
+    @OneToMany(mappedBy = "idUsuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Logro> logros = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "idUsuario")
+    @OneToMany(mappedBy = "idUsuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<UsuarioDesafio> usuarioDesafios = new LinkedHashSet<>();
+
+    public Usuario() {
+    }
 
     public Integer getId() {
         return id;
@@ -134,20 +131,20 @@ public class Usuario {
         this.fotoPerfil = fotoPerfil;
     }
 
-    public Integer getNivel() {
-        return nivel;
-    }
-
-    public void setNivel(Integer nivel) {
-        this.nivel = nivel;
-    }
-
     public Integer getPuntosTotales() {
         return puntosTotales;
     }
 
     public void setPuntosTotales(Integer puntosTotales) {
         this.puntosTotales = puntosTotales;
+    }
+
+    public Integer getNivel() {
+        return nivel;
+    }
+
+    public void setNivel(Integer nivel) {
+        this.nivel = nivel;
     }
 
     public String getBiografia() {
@@ -158,20 +155,20 @@ public class Usuario {
         this.biografia = biografia;
     }
 
+    public Rangos getRango() {
+        return rango;
+    }
+
+    public void setRango(Rangos rango) {
+        this.rango = rango;
+    }
+
     public Instant getFechaUltimoIngreso() {
         return fechaUltimoIngreso;
     }
 
     public void setFechaUltimoIngreso(Instant fechaUltimoIngreso) {
         this.fechaUltimoIngreso = fechaUltimoIngreso;
-    }
-
-    public String getRango() {
-        return rango;
-    }
-
-    public void setRango(String rango) {
-        this.rango = rango;
     }
 
     public Instant getUltimaActualizacion() {
@@ -210,8 +207,8 @@ public class Usuario {
         return logros;
     }
 
-    public void setLogros(Set<Logro> logroes) {
-        this.logros = logroes;
+    public void setLogros(Set<Logro> logros) {
+        this.logros = logros;
     }
 
     public Set<UsuarioDesafio> getUsuarioDesafios() {
@@ -221,4 +218,20 @@ public class Usuario {
     public void setUsuarioDesafios(Set<UsuarioDesafio> usuarioDesafios) {
         this.usuarioDesafios = usuarioDesafios;
     }
+
+    @PrePersist
+    protected void onCreate() {
+        Instant now = Instant.now();
+        if (this.fechaRegistro == null) { // Aunque ya es nullable=false, esto asegura el valor en Java
+            this.fechaRegistro = now;
+        }
+        this.ultimaActualizacion = now; // Siempre se establece al crear y actualizar
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.ultimaActualizacion = Instant.now();
+    }
+
+    // Getters y Setters son generados por Lombok
 }

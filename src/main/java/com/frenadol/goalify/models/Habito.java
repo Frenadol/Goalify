@@ -23,7 +23,7 @@ public class Habito {
     @Column(name = "id_habito", nullable = false)
     private Integer id;
 
-    @NotNull
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "id_usuario", nullable = false)
