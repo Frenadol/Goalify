@@ -1,9 +1,7 @@
 package com.frenadol.goalify.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
@@ -15,11 +13,11 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
-@Table(name = "estadistica")
-public class Estadistica {
+@Table(name = "usuario_articulo_tienda")
+public class UsuarioArticuloTienda {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_estadistica", nullable = false)
+    @Column(name = "id_usuario_articulo", nullable = false)
     private Integer id;
 
     @NotNull
@@ -31,18 +29,12 @@ public class Estadistica {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "id_habito", nullable = false)
-    private Habito idHabito;
+    @JoinColumn(name = "id_articulo", nullable = false)
+    private ArticuloTienda idArticulo;
 
-    @Column(name = "fecha")
-    private Instant fecha;
-
-    @ColumnDefault("0")
-    @Column(name = "cantidad_completada")
-    private Integer cantidadCompletada;
-
-    @ColumnDefault("0")
-    @Column(name = "puntos_obtenidos")
-    private Integer puntosObtenidos;
+    @NotNull
+    @ColumnDefault("current_timestamp()")
+    @Column(name = "fecha_adquisicion", nullable = false)
+    private Instant fechaAdquisicion;
 
 }

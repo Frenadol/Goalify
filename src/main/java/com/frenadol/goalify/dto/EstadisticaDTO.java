@@ -11,5 +11,4 @@ public class EstadisticaDTO {
     private Instant fecha;
     private Integer cantidadCompletada;
     private Integer puntosObtenidos;
-    private String rango;
 }

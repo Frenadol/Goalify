@@ -1,54 +1,31 @@
 package com.frenadol.goalify.exception;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
+public class HabitException {
 
-public class HabitException extends RuntimeException {
-  private final String campo;
-  private final Object valor;
-
-  @ResponseStatus(HttpStatus.NOT_FOUND)
-  public static class HabitNotFoundException extends HabitException {
-    // MODIFICACIÓN IMPORTANTE: Hacer el constructor más flexible o específico para Integer
-    public HabitNotFoundException(Object id) { // Acepta Object para manejar Integer o Long
-      super("Hábito no encontrado", "id", id);
+  public static class HabitNotFoundException extends RuntimeException {
+    public HabitNotFoundException(Integer id) {
+      super("Hábito no encontrado con ID: " + id);
     }
-    // O, si prefieres ser específico y tenías uno para Long:
-    // public HabitNotFoundException(Long id) { super("Hábito no encontrado", "id", id); }
-    // public HabitNotFoundException(Integer id) { super("Hábito no encontrado", "id", id); }
-  }
-
-  @ResponseStatus(HttpStatus.BAD_REQUEST)
-  public static class InvalidHabitDataException extends HabitException {
-    public InvalidHabitDataException(String campo, String mensajeEspecifico) {
-      super(mensajeEspecifico, campo, null);
-    }
-    public InvalidHabitDataException(String mensajeGeneral) {
-      super(mensajeGeneral, null, null);
+    public HabitNotFoundException(String message) {
+      super(message);
     }
   }
 
-  @ResponseStatus(HttpStatus.FORBIDDEN)
-  public static class HabitAccessException extends HabitException {
-    public HabitAccessException(String mensaje) {
-      super(mensaje, "permiso", null);
-    }
-    public HabitAccessException() {
-      super("Acceso denegado al hábito", "permiso", null);
+  public static class HabitAccessException extends RuntimeException {
+    public HabitAccessException(String message) {
+      super(message);
     }
   }
 
-  protected HabitException(String mensaje, String campo, Object valor) {
-    super(mensaje);
-    this.campo = campo;
-    this.valor = valor;
+  public static class InvalidHabitDataException extends RuntimeException {
+    public InvalidHabitDataException(String message) {
+      super(message);
+    }
   }
 
-  public String getCampo() {
-    return campo;
-  }
-
-  public Object getValor() {
-    return valor;
+  public static class HabitAlreadyCompletedException extends RuntimeException { // NUEVA EXCEPCIÓN
+    public HabitAlreadyCompletedException(String message) {
+      super(message);
+    }
   }
 }

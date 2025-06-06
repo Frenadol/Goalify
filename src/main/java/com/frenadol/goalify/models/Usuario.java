@@ -1,14 +1,18 @@
 package com.frenadol.goalify.models;
 
-import com.frenadol.goalify.enums.Rangos; // Asegúrate que la ruta a tu enum sea correcta
+import com.frenadol.goalify.enums.Rangos;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
 @Getter
@@ -16,6 +20,13 @@ import java.util.Set;
 @Entity
 @Table(name = "usuario")
 public class Usuario {
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "preferences", columnDefinition = "json")
+    private Map<String, Object> preferences;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "fechas_rangos_conseguidos", columnDefinition = "json")
+    private Map<String, Instant> fechasRangosConseguidos;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,37 +48,45 @@ public class Usuario {
     @Column(name = "contrasena", nullable = false)
     private String contrasena;
 
-    @Column(name = "fecha_registro", updatable = false, nullable = false) // Aseguramos que no sea null en DB
+    @Column(name = "fecha_registro", updatable = false, nullable = false)
     private Instant fechaRegistro;
 
     @Lob
     @Column(name = "foto_perfil", columnDefinition="TEXT")
-    private String fotoPerfil; // Este puede ser null si el usuario no sube foto
+    private String fotoPerfil;
 
     @Column(name = "puntos_totales", nullable = false)
-    private Integer puntosTotales = 0; // Valor por defecto
+    private Integer puntosTotales = 0;
+
+    @Column(name = "puntos_record", nullable = false) // NUEVO CAMPO
+    private Integer puntosRecord = 0; // NUEVO CAMPO
 
     @Column(name = "nivel", nullable = false)
-    private Integer nivel = 1; // Valor por defecto
+    private Integer nivel = 1;
 
     @Lob
     @Column(name = "biografia", columnDefinition="TEXT")
-    private String biografia; // Este puede ser null o puedes inicializarlo a "" si prefieres
+    private String biografia;
 
     @Column(name = "fecha_ultimo_ingreso")
-    private Instant fechaUltimoIngreso; // Se actualiza al ingresar, puede ser null inicialmente
+    private Instant fechaUltimoIngreso;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "rango", length = 50, nullable = false)
-    private Rangos rango = Rangos.NOVATO; // Valor por defecto
+    private Rangos rango = Rangos.NOVATO;
 
-    @Column(name = "ultima_actualizacion", nullable = false) // Aseguramos que no sea null en DB
+    @Column(name = "ultima_actualizacion", nullable = false)
     private Instant ultimaActualizacion;
 
     @Column(name = "es_administrador", nullable = false)
-    private Boolean esAdministrador = false; // Valor por defecto
+    private Boolean esAdministrador = false;
 
-    // Relaciones
+    @Column(name = "total_desafios_completados", nullable = false)
+    private Integer totalDesafiosCompletados = 0;
+
+    @Column(name = "total_habitos_completados", nullable = false)
+    private Integer totalHabitosCompletados = 0;
+
     @OneToMany(mappedBy = "idUsuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Estadistica> estadisticas = new LinkedHashSet<>();
 
@@ -81,151 +100,37 @@ public class Usuario {
     private Set<UsuarioDesafio> usuarioDesafios = new LinkedHashSet<>();
 
     public Usuario() {
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getContrasena() {
-        return contrasena;
-    }
-
-    public void setContrasena(String contrasena) {
-        this.contrasena = contrasena;
-    }
-
-    public Instant getFechaRegistro() {
-        return fechaRegistro;
-    }
-
-    public void setFechaRegistro(Instant fechaRegistro) {
-        this.fechaRegistro = fechaRegistro;
-    }
-
-    public String getFotoPerfil() {
-        return fotoPerfil;
-    }
-
-    public void setFotoPerfil(String fotoPerfil) {
-        this.fotoPerfil = fotoPerfil;
-    }
-
-    public Integer getPuntosTotales() {
-        return puntosTotales;
-    }
-
-    public void setPuntosTotales(Integer puntosTotales) {
-        this.puntosTotales = puntosTotales;
-    }
-
-    public Integer getNivel() {
-        return nivel;
-    }
-
-    public void setNivel(Integer nivel) {
-        this.nivel = nivel;
-    }
-
-    public String getBiografia() {
-        return biografia;
-    }
-
-    public void setBiografia(String biografia) {
-        this.biografia = biografia;
-    }
-
-    public Rangos getRango() {
-        return rango;
-    }
-
-    public void setRango(Rangos rango) {
-        this.rango = rango;
-    }
-
-    public Instant getFechaUltimoIngreso() {
-        return fechaUltimoIngreso;
-    }
-
-    public void setFechaUltimoIngreso(Instant fechaUltimoIngreso) {
-        this.fechaUltimoIngreso = fechaUltimoIngreso;
-    }
-
-    public Instant getUltimaActualizacion() {
-        return ultimaActualizacion;
-    }
-
-    public void setUltimaActualizacion(Instant ultimaActualizacion) {
-        this.ultimaActualizacion = ultimaActualizacion;
-    }
-
-    public Boolean getEsAdministrador() {
-        return esAdministrador;
-    }
-
-    public void setEsAdministrador(Boolean esAdministrador) {
-        this.esAdministrador = esAdministrador;
-    }
-
-    public Set<Estadistica> getEstadisticas() {
-        return estadisticas;
-    }
-
-    public void setEstadisticas(Set<Estadistica> estadisticas) {
-        this.estadisticas = estadisticas;
-    }
-
-    public Set<Habito> getHabitos() {
-        return habitos;
-    }
-
-    public void setHabitos(Set<Habito> habitos) {
-        this.habitos = habitos;
-    }
-
-    public Set<Logro> getLogros() {
-        return logros;
-    }
-
-    public void setLogros(Set<Logro> logros) {
-        this.logros = logros;
-    }
-
-    public Set<UsuarioDesafio> getUsuarioDesafios() {
-        return usuarioDesafios;
-    }
-
-    public void setUsuarioDesafios(Set<UsuarioDesafio> usuarioDesafios) {
-        this.usuarioDesafios = usuarioDesafios;
+        this.preferences = new HashMap<>();
+        this.fechasRangosConseguidos = new HashMap<>();
     }
 
     @PrePersist
     protected void onCreate() {
         Instant now = Instant.now();
-        if (this.fechaRegistro == null) { // Aunque ya es nullable=false, esto asegura el valor en Java
+        if (this.fechaRegistro == null) {
             this.fechaRegistro = now;
         }
-        this.ultimaActualizacion = now; // Siempre se establece al crear y actualizar
+        this.ultimaActualizacion = now;
+
+        if (this.preferences == null) {
+            this.preferences = new HashMap<>();
+        }
+        this.initializeDefaultPreferences();
+
+        if (this.fechasRangosConseguidos == null) {
+            this.fechasRangosConseguidos = new HashMap<>();
+        }
+        if (this.rango == Rangos.NOVATO && !this.fechasRangosConseguidos.containsKey(Rangos.NOVATO.name())) {
+            this.fechasRangosConseguidos.put(Rangos.NOVATO.name(), this.fechaRegistro);
+        }
+
+        if (this.puntosTotales == null) this.puntosTotales = 0;
+        if (this.puntosRecord == null) this.puntosRecord = 0; // INICIALIZAR NUEVO CAMPO
+        if (this.nivel == null) this.nivel = 1;
+        if (this.rango == null) this.rango = Rangos.NOVATO;
+        if (this.esAdministrador == null) this.esAdministrador = false;
+        if (this.totalDesafiosCompletados == null) this.totalDesafiosCompletados = 0;
+        if (this.totalHabitosCompletados == null) this.totalHabitosCompletados = 0;
     }
 
     @PreUpdate
@@ -233,5 +138,18 @@ public class Usuario {
         this.ultimaActualizacion = Instant.now();
     }
 
-    // Getters y Setters son generados por Lombok
+    private void initializeDefaultPreferences() {
+        if (this.preferences == null) {
+            this.preferences = new HashMap<>();
+        }
+        this.preferences.putIfAbsent("themeColor", "#3f51b5");
+        this.preferences.putIfAbsent("showBio", true);
+        this.preferences.putIfAbsent("showHabitStats", true);
+        this.preferences.putIfAbsent("showCurrentChallenges", true);
+        this.preferences.putIfAbsent("showCompletedChallenges", true);
+        this.preferences.putIfAbsent("cardBackgroundColor", "#FFFFFF");
+        this.preferences.putIfAbsent("showChallengeCategoryOnCard", true);
+        this.preferences.putIfAbsent("showChallengePointsOnCard", true);
+        this.preferences.putIfAbsent("showChallengeDatesOnCard", true);
+    }
 }

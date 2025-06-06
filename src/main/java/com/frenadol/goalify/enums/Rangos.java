@@ -8,4 +8,6 @@ public enum Rangos {
     DEDICADO,
     INSPIRADOR,
     MAESTRO_HABITOS,
+
+
 }
