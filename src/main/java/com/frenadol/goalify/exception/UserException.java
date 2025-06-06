@@ -13,6 +13,11 @@
                 super("Usuario no encontrado", "email", email);
             }
         }
+        public static class UserAlreadyExistsException extends RuntimeException {
+            public UserAlreadyExistsException(String message) {
+                super(message);
+            }
+        }
 
         public static class DuplicateUserException extends UserException {
             public DuplicateUserException(String email) {
@@ -41,6 +46,16 @@
         public static class UserRelationshipException extends UserException {
             public UserRelationshipException(String entidad) {
                 super("Error en relación de usuario", entidad, null);
+            }
+        }
+        public static class InsufficientPointsException extends UserException {
+            public InsufficientPointsException(String message) {
+                // No necesitamos 'campo' ni 'valor' para esta excepción específica,
+                // así que podemos pasar null o valores genéricos si el constructor base los requiere.
+                // O, si prefieres, puedes hacer que esta excepción herede directamente de RuntimeException
+                // si no necesita los campos 'campo' y 'valor'.
+                // Por ahora, la hacemos heredar de UserException para mantener la estructura.
+                super(message, "puntosTotales", null); // Pasamos nulls o valores genéricos para campo y valor
             }
         }
 

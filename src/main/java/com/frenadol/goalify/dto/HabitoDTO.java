@@ -1,18 +1,29 @@
 package com.frenadol.goalify.dto;
 
-import lombok.Data;
-import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime; // Asegúrate de importar esto
 
-@Data
 public class HabitoDTO {
     private Integer id;
-    private Integer idUsuario;
     private String nombre;
     private String descripcion;
     private String frecuencia;
-    private Instant horaProgramada;
+    private String horaProgramada; // Podría ser LocalTime si solo es hora, o String si es flexible
     private String estado;
     private Integer puntosRecompensa;
+    // private Integer idUsuario; // Generalmente no se expone
+
+    // Nuevos campos para reflejar el estado de completación
+    private LocalDate fechaUltimaCompletacion;
+    private Integer rachaActual;
+
+    // Constructores, Getters y Setters
+
+    public HabitoDTO() {
+    }
+
+    // Getters y Setters para todos los campos, incluyendo los nuevos:
+    // fechaUltimaCompletacion y rachaActual
 
     public Integer getId() {
         return id;
@@ -20,22 +31,6 @@ public class HabitoDTO {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getIdUsuario() {
-        return idUsuario;
-    }
-
-    public void setIdUsuario(Integer idUsuario) {
-        this.idUsuario = idUsuario;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
     }
 
     public String getNombre() {
@@ -46,6 +41,14 @@ public class HabitoDTO {
         this.nombre = nombre;
     }
 
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
     public String getFrecuencia() {
         return frecuencia;
     }
@@ -54,11 +57,11 @@ public class HabitoDTO {
         this.frecuencia = frecuencia;
     }
 
-    public Instant getHoraProgramada() {
+    public String getHoraProgramada() {
         return horaProgramada;
     }
 
-    public void setHoraProgramada(Instant horaProgramada) {
+    public void setHoraProgramada(String horaProgramada) {
         this.horaProgramada = horaProgramada;
     }
 
@@ -76,5 +79,21 @@ public class HabitoDTO {
 
     public void setPuntosRecompensa(Integer puntosRecompensa) {
         this.puntosRecompensa = puntosRecompensa;
+    }
+
+    public LocalDate getFechaUltimaCompletacion() {
+        return fechaUltimaCompletacion;
+    }
+
+    public void setFechaUltimaCompletacion(LocalDate fechaUltimaCompletacion) {
+        this.fechaUltimaCompletacion = fechaUltimaCompletacion;
+    }
+
+    public Integer getRachaActual() {
+        return rachaActual;
+    }
+
+    public void setRachaActual(Integer rachaActual) {
+        this.rachaActual = rachaActual;
     }
 }
